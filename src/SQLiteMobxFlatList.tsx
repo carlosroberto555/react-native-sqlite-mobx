@@ -19,7 +19,17 @@ function SQLiteMobxFlatList(props: Props<any>) {
 		model.loadItems()
 	}, [where])
 
-	return <Observer>{() => <FlatList {...rest} data={model.data} />}</Observer>
+	return (
+		<Observer>
+			{() => (
+				<FlatList
+					{...rest}
+					data={model.data}
+					initialNumToRender={model.data.length}
+				/>
+			)}
+		</Observer>
+	)
 }
 
 export default SQLiteMobxFlatList
