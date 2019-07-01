@@ -3,6 +3,7 @@ export default abstract class SQLiteMobxModel<T extends {
 }> {
     abstract table: string;
     abstract data: T[];
+    abstract where?: string;
     loadItems(): Promise<void>;
     setItems(items: T[]): Promise<void>;
     addItems(items: T[]): Promise<void>;
