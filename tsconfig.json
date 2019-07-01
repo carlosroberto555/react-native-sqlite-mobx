@@ -10,8 +10,10 @@
 		"moduleResolution": "node",
 		"noEmit": true,
 		"strict": true,
-		"target": "esnext"
+		"target": "esnext",
+		"outDir": "typescript"
 	},
+
 	"exclude": [
 		"node_modules",
 		"babel.config.js",
