@@ -8,14 +8,16 @@ import SQLiteMobxModel from './SQLiteMobxModel'
 interface Props<T extends { id: number }> extends FlatListProps<T> {
 	model: SQLiteMobxModel<T>
 	data?: undefined
+	where?: string
 }
 
 function SQLiteMobxFlatList(props: Props<any>) {
-	const { model, ...rest } = props
+	const { model, where, ...rest } = props
 
 	useEffect(() => {
+		model.where = where
 		model.loadItems()
-	}, [])
+	}, [where])
 
 	return <Observer>{() => <FlatList {...rest} data={model.data} />}</Observer>
 }

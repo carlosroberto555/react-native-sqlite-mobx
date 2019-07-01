@@ -4,10 +4,13 @@ import SQLite from './SQLite'
 export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	abstract table: string
 	abstract data: T[]
+	abstract where?: string
 
 	@action
 	async loadItems() {
-		const resp = await SQLite.query('SELECT * FROM ' + this.table)
+		const resp = await SQLite.query(
+			`SELECT * FROM ${this.table} WHERE ${this.where || 1}`
+		)
 		runInAction(() => {
 			this.data = resp.toArray() || []
 		})
