@@ -9,6 +9,7 @@
 		"noEmit": true,
 		"strict": true,
 		"target": "esnext",
+		"declaration": true,
 		"declarationDir": "typescript"
 	},
 	"exclude": [
