@@ -1,0 +1,8 @@
+{
+  "name": "react-native-sqlite-mobx",
+  "version": "1.0.0",
+  "description": "Library with amazing functions for sqlite and mobx",
+  "main": "index.js",
+  "author": "Carlos Roberto",
+  "license": "MIT"
+}
