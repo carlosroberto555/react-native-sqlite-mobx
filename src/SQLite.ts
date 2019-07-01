@@ -7,7 +7,6 @@ import sqlite, {
 } from 'react-native-sqlite-storage'
 
 sqlite.enablePromise(true)
-sqlite.DEBUG(true)
 
 interface TransactionCallback {
 	(tx: SQLiteTransaction): void
