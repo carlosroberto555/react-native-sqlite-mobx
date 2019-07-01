@@ -2,23 +2,26 @@
 	"name": "react-native-sqlite-mobx",
 	"version": "1.0.0",
 	"description": "Library with amazing functions for sqlite and mobx",
-	"main": "dist/index.js",
+	"main": "lib/index.js",
+	"types": "lib",
 	"author": "Carlos Roberto",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc --declaration index.ts --declarationDir typescript --outDir dist --lib esnext --target esnext --moduleResolution node --experimentalDecorators --esModuleInterop"
+		"build": "tsc -p ."
 	},
-	"dependencies": {
-		"mobx": "^5.10.1",
-		"mobx-react-lite": "^1.4.1",
-		"react": "^16.8.6",
-		"react-native": "^0.59.9",
-		"react-native-sqlite-storage": "^3.3.10"
+	"peerDependencies": {
+		"react": ">=16.0.0",
+		"react-native": ">=0.59"
 	},
 	"devDependencies": {
 		"@types/react": "^16.8.22",
 		"@types/react-native": "^0.57.65",
 		"@types/react-native-sqlite-storage": "^3.3.1",
+		"mobx": "^5.10.1",
+		"mobx-react-lite": "^1.4.1",
+		"react": "^16.8.6",
+		"react-native": "^0.59.9",
+		"react-native-sqlite-storage": "^3.3.10",
 		"typescript": "^3.5.2"
 	}
 }
