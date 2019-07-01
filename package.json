@@ -4,5 +4,13 @@
   "description": "Library with amazing functions for sqlite and mobx",
   "main": "index.js",
   "author": "Carlos Roberto",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mobx": "^5.10.1",
+    "react-native-sqlite-storage": "^3.3.10"
+  },
+  "devDependencies": {
+    "@types/react-native-sqlite-storage": "^3.3.1",
+    "typescript": "^3.5.2"
+  }
 }
