@@ -10,9 +10,14 @@
 	},
 	"dependencies": {
 		"mobx": "^5.10.1",
+		"mobx-react-lite": "^1.4.1",
+		"react": "^16.8.6",
+		"react-native": "^0.59.9",
 		"react-native-sqlite-storage": "^3.3.10"
 	},
 	"devDependencies": {
+		"@types/react": "^16.8.22",
+		"@types/react-native": "^0.57.65",
 		"@types/react-native-sqlite-storage": "^3.3.1",
 		"typescript": "^3.5.2"
 	}
