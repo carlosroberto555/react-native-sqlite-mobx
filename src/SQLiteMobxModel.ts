@@ -14,6 +14,13 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	}
 
 	@action
+	async setItems(items: T[]) {
+		await SQLite.truncateTable(this.table)
+		await SQLite.insertMany(this.table, items)
+		await this.loadItems()
+	}
+
+	@action
 	async addItems(items: T[]) {
 		await SQLite.insertMany(this.table, items)
 		await this.loadItems()
