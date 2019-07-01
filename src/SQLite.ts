@@ -1,10 +1,7 @@
-import sqlite, {
-	DatabaseParams,
-	SQLiteDatabase,
-	Transaction,
-	ResultSet,
-	ResultSetRowList
-} from 'react-native-sqlite-storage'
+import sqlite from 'react-native-sqlite-storage'
+
+import SQLiteTransaction from './SQLiteTransaction'
+import SQLiteResultSet from './SQLiteResultSet'
 
 sqlite.enablePromise(true)
 
@@ -13,9 +10,9 @@ interface TransactionCallback {
 }
 
 export default class SQLite {
-	protected static db: SQLiteDatabase
+	protected static db: sqlite.SQLiteDatabase
 
-	static async openDatabase(params: DatabaseParams) {
+	static async openDatabase(params: sqlite.DatabaseParams) {
 		SQLite.db = await sqlite.openDatabase(params)
 	}
 
@@ -101,42 +98,3 @@ export default class SQLite {
 		}
 	}
 }
-
-class SQLiteTransaction {
-	transaction: Transaction
-
-	constructor(tx: Transaction) {
-		this.transaction = tx
-	}
-
-	async query(statement: string, params?: any[]) {
-		const [, result] = await this.transaction.executeSql(statement, params)
-		return new SQLiteResultSet(result)
-	}
-}
-
-class SQLiteResultSet implements ResultSet {
-	insertId: number
-	rowsAffected: number
-	rows: ResultSetRowList
-
-	constructor(result: ResultSet) {
-		this.insertId = result.insertId
-		this.rowsAffected = result.rowsAffected
-		this.rows = result.rows
-	}
-
-	*data() {
-		for (let i = 0; i < this.rows.length; i++) {
-			yield this.rows.item(i)
-		}
-	}
-
-	toArray() {
-		return Array.from(this.data())
-	}
-}
-
-// function* transactionCallback(tx) {
-// 	yield
-// }
