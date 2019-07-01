@@ -6,7 +6,7 @@
 	"author": "Carlos Roberto",
 	"license": "MIT",
 	"scripts": {
-		"postinstall": "tsc --declaration index.ts --declarationDir typescript --outDir dist --lib esnext --target esnext"
+		"build": "tsc --declaration index.ts --declarationDir typescript --outDir dist --lib esnext --target esnext --moduleResolution node --experimentalDecorators --esModuleInterop"
 	},
 	"dependencies": {
 		"mobx": "^5.10.1",

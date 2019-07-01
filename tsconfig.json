@@ -8,9 +8,9 @@
 		"moduleResolution": "node",
 		"noEmit": true,
 		"strict": true,
-		"target": "esnext"
+		"target": "esnext",
+		"declarationDir": "typescript"
 	},
-
 	"exclude": [
 		"node_modules",
 		"babel.config.js",
