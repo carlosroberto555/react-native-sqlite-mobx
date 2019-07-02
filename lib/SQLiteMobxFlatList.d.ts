@@ -6,6 +6,7 @@ interface Props<T extends {
 }> extends FlatListProps<T> {
     model: SQLiteMobxModel<T>;
     data?: undefined;
+    where?: string;
 }
 declare function SQLiteMobxFlatList(props: Props<any>): JSX.Element;
 export default SQLiteMobxFlatList;
