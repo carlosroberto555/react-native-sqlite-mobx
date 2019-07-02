@@ -1,6 +1,10 @@
 {
 	"name": "react-native-sqlite-mobx",
 	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/carlosroberto555/react-native-sqlite-mobx"
+	},
 	"description": "Library with amazing functions for sqlite and mobx",
 	"main": "lib/index.js",
 	"types": "lib",
