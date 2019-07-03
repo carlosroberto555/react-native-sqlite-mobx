@@ -16,6 +16,6 @@ export default class SQLite {
     static truncateTable(table: string): Promise<SQLiteResultSet>;
     static insert(table: string, item: object): Promise<SQLiteResultSet>;
     static insertOrReplace(table: string, item: object): Promise<SQLiteResultSet>;
-    static insertMany(table: string, items: object[]): Promise<SQLiteResultSet | undefined>;
+    static insertMany(table: string, items: object[]): Promise<void>;
 }
 export {};
