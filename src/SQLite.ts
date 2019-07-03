@@ -94,7 +94,7 @@ export default class SQLite {
 
 		// Executa as queries
 		for (const stmt of queries) {
-			return SQLite.query(stmt)
+			SQLite.query(stmt)
 		}
 	}
 }
