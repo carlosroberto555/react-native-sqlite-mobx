@@ -11,21 +11,29 @@
 	"author": "Carlos Roberto",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc -p ."
+		"build": "tsc -p .",
+		"test": "jest"
 	},
 	"peerDependencies": {
 		"react": ">=16.0.0",
 		"react-native": ">=0.59"
 	},
+	"dependencies": {
+		"mobx": "^5.10.1",
+		"mobx-react-lite": "^1.4.1",
+		"react-native-sqlite-storage": "^3.3.10"
+	},
 	"devDependencies": {
+		"@types/jest": "^24.0.15",
 		"@types/react": "^16.8.22",
 		"@types/react-native": "^0.57.65",
 		"@types/react-native-sqlite-storage": "^3.3.1",
-		"mobx": "^5.10.1",
-		"mobx-react-lite": "^1.4.1",
+		"@types/react-test-renderer": "^16.8.2",
+		"babel-jest": "^24.8.0",
+		"jest": "^24.8.0",
 		"react": "^16.8.6",
 		"react-native": "^0.59.9",
-		"react-native-sqlite-storage": "^3.3.10",
+		"react-test-renderer": "^16.8.6",
 		"typescript": "^3.5.2"
 	}
 }
