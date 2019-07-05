@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { FlatList, FlatListProps } from 'react-native'
-import { Observer } from 'mobx-react-lite'
+import { useObserver } from 'mobx-react-lite'
 
 import SQLiteMobxModel from './SQLiteMobxModel'
 
@@ -19,17 +19,7 @@ function SQLiteMobxFlatList(props: Props<any>) {
 		model.loadItems()
 	}, [where])
 
-	return (
-		<Observer>
-			{() => (
-				<FlatList
-					{...rest}
-					data={model.data}
-					initialNumToRender={model.data.length}
-				/>
-			)}
-		</Observer>
-	)
+	return useObserver(() => <FlatList {...rest} data={model.data} />)
 }
 
 export default SQLiteMobxFlatList
