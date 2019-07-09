@@ -12,7 +12,8 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "tsc -p .",
-		"test": "jest"
+		"test": "jest",
+		"prepublish": "yarn build"
 	},
 	"peerDependencies": {
 		"react": ">=16.0.0",
