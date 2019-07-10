@@ -1,19 +1,26 @@
 import { action, observable, runInAction } from 'mobx'
 import SQLite from './SQLite'
 
+type SelectParams = {
+	select?: string
+	join?: string
+	where?: string
+}
+
 export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	abstract table: string
 	abstract data: T[]
-	@observable select?: string = '*'
-	@observable where?: string = '1'
-	@observable join?: string = ''
 
 	@action.bound
-	async loadItems() {
+	async loadItems(params?: SelectParams) {
+		const { select, join, where } = params || {
+			select: '*',
+			join: '',
+			where: '1'
+		}
+
 		const resp = await SQLite.query(
-			`SELECT ${this.select} FROM ${this.table} ${this.join} WHERE ${
-				this.where
-			}`
+			`SELECT ${select} FROM ${this.table} ${join} WHERE ${where}`
 		)
 		runInAction(() => {
 			this.data = resp.toArray() || []
