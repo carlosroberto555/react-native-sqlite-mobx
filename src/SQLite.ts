@@ -12,6 +12,10 @@ interface TransactionCallback {
 export default class SQLite {
 	protected static db: sqlite.SQLiteDatabase
 
+	static get databaseInstance() {
+		return SQLite.db
+	}
+
 	static async openDatabase(params: sqlite.DatabaseParams) {
 		SQLite.db = await sqlite.openDatabase(params)
 	}

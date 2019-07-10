@@ -1,6 +1,5 @@
 import sqlite from 'react-native-sqlite-storage'
 import SQLite from '../src/SQLite'
-import { databaseMock } from '../__mocks__/react-native-sqlite-storage'
 
 it('test if database is opening ok', async () => {
 	// Open database and mock functions
@@ -13,13 +12,24 @@ it('test if database is opening ok', async () => {
 	})
 })
 
-it('test if sqlite is triggering executeSql on query', async () => {
+it('test sql generated with query', async () => {
 	// Execute a query with params
 	await SQLite.query('SELECT * FROM test WHERE id = ?', [1])
 
 	// Check if executeSql is executed correct
-	expect(databaseMock.executeSql).toBeCalledWith(
+	expect(SQLite.databaseInstance.executeSql).toBeCalledWith(
 		'SELECT * FROM test WHERE id = ?',
 		[1]
+	)
+})
+
+it('test sql generated with truncateTable', async () => {
+	// Execute a query with params
+	await SQLite.truncateTable('test')
+
+	// Check if executeSql is executed correct
+	expect(SQLite.databaseInstance.executeSql).toBeCalledWith(
+		"DELETE FROM test; DELETE FROM sqlite_sequence where name='test';",
+		undefined
 	)
 })
