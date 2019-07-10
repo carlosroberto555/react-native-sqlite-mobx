@@ -1,6 +1,6 @@
 {
 	"name": "react-native-sqlite-mobx",
-	"version": "1.0.7",
+	"version": "1.1.0",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/carlosroberto555/react-native-sqlite-mobx"
@@ -13,7 +13,7 @@
 	"scripts": {
 		"build": "tsc -p .",
 		"test": "jest",
-		"prepublish": "yarn build"
+		"prepublish": "tsc -p ."
 	},
 	"peerDependencies": {
 		"react": ">=16.0.0",
