@@ -36,6 +36,12 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	}
 
 	@action.bound
+	async setItem(item: T) {
+		await SQLite.insertOrReplace(this.table, item)
+		await this.loadItems()
+	}
+
+	@action.bound
 	async getItem(id: number) {
 		// TODO: implement this
 	}
