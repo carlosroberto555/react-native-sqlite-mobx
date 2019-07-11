@@ -1,19 +1,22 @@
-import { action, observable, runInAction } from 'mobx'
+import { action, runInAction } from 'mobx'
 import SQLite from './SQLite'
+
+type QueryParams = {
+	select?: string
+	join?: string
+	where?: string
+}
 
 export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	abstract table: string
 	abstract data: T[]
-	@observable select?: string = '*'
-	@observable where?: string = '1'
-	@observable join?: string = ''
 
 	@action.bound
-	async loadItems() {
+	async loadItems(params?: QueryParams) {
+		const { select, join, where } = getQueryParams(params)
+
 		const resp = await SQLite.query(
-			`SELECT ${this.select} FROM ${this.table} ${this.join} WHERE ${
-				this.where
-			}`
+			`SELECT ${select} FROM ${this.table} ${join} WHERE ${where}`
 		)
 		runInAction(() => {
 			this.data = resp.toArray() || []
@@ -59,5 +62,21 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	async removeItem(item: T) {
 		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
 		await this.loadItems()
+	}
+}
+
+function getQueryParams(p?: QueryParams) {
+	if (p) {
+		return {
+			select: p.select || '*',
+			join: p.join || '',
+			where: p.where || '1'
+		}
+	} else {
+		return {
+			select: '*',
+			join: '',
+			where: '1'
+		}
 	}
 }
