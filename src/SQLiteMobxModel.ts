@@ -8,7 +8,7 @@ type QueryParams = {
 }
 
 export default abstract class SQLiteMobxModel<T extends { id: number }> {
-	@observable timestamp: number = new Date().getTime()
+	@observable lastParams?: QueryParams
 	abstract table: string
 	abstract data: T[]
 
@@ -21,6 +21,7 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 		)
 		runInAction(() => {
 			this.data = resp.toArray() || []
+			this.lastParams = params
 		})
 	}
 
@@ -28,25 +29,25 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	async setItems(items: T[]) {
 		await SQLite.truncateTable(this.table)
 		await SQLite.insertMany(this.table, items)
-		this.updateTimestamp()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
 	async addItems(items: T[]) {
 		await SQLite.insertMany(this.table, items)
-		this.updateTimestamp()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
 	async addItem(item: T) {
 		await SQLite.insert(this.table, item)
-		this.updateTimestamp()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
 	async setItem(item: T) {
 		await SQLite.insertOrReplace(this.table, item)
-		this.updateTimestamp()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
@@ -62,12 +63,13 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	@action.bound
 	async removeItem(item: T) {
 		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
-		this.updateTimestamp()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
-	updateTimestamp() {
-		this.timestamp = new Date().getTime()
+	clear() {
+		this.lastParams = undefined
+		this.data = []
 	}
 }
 
