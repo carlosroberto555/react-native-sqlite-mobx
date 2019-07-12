@@ -1,4 +1,4 @@
-import { action, runInAction } from 'mobx'
+import { action, runInAction, observable } from 'mobx'
 import SQLite from './SQLite'
 
 type QueryParams = {
@@ -8,6 +8,7 @@ type QueryParams = {
 }
 
 export default abstract class SQLiteMobxModel<T extends { id: number }> {
+	@observable timestamp: number = new Date().getTime()
 	abstract table: string
 	abstract data: T[]
 
@@ -27,25 +28,25 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	async setItems(items: T[]) {
 		await SQLite.truncateTable(this.table)
 		await SQLite.insertMany(this.table, items)
-		await this.loadItems()
+		this.updateTimestamp()
 	}
 
 	@action.bound
 	async addItems(items: T[]) {
 		await SQLite.insertMany(this.table, items)
-		await this.loadItems()
+		this.updateTimestamp()
 	}
 
 	@action.bound
 	async addItem(item: T) {
 		await SQLite.insert(this.table, item)
-		await this.loadItems()
+		this.updateTimestamp()
 	}
 
 	@action.bound
 	async setItem(item: T) {
 		await SQLite.insertOrReplace(this.table, item)
-		await this.loadItems()
+		this.updateTimestamp()
 	}
 
 	@action.bound
@@ -61,7 +62,12 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	@action.bound
 	async removeItem(item: T) {
 		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
-		await this.loadItems()
+		this.updateTimestamp()
+	}
+
+	@action.bound
+	updateTimestamp() {
+		this.timestamp = new Date().getTime()
 	}
 }
 
