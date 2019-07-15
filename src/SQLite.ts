@@ -10,6 +10,7 @@ interface TransactionCallback {
 }
 
 interface SQLiteItem {
+	[key: string]: number | string
 	id: number
 }
 
