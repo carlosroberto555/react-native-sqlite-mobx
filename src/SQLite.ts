@@ -9,6 +9,10 @@ interface TransactionCallback {
 	(tx: SQLiteTransaction): void
 }
 
+interface SQLiteItem {
+	id: number
+}
+
 export default class SQLite {
 	protected static db: sqlite.SQLiteDatabase
 
@@ -53,7 +57,7 @@ export default class SQLite {
 		return SQLite.query(query)
 	}
 
-	static insertOrReplace(table: string, item: object) {
+	static insertOrReplace(table: string, item: SQLiteItem) {
 		// @ts-ignore
 		const { id, ...rest } = item
 

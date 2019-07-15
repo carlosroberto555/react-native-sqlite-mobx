@@ -7,10 +7,14 @@ type QueryParams = {
 	where?: string
 }
 
-export default abstract class SQLiteMobxModel<T extends { id: number }> {
+interface SQLiteItem {
+	id: number
+}
+
+export default abstract class SQLiteMobxModel<T extends object> {
 	@observable lastParams?: QueryParams
 	abstract table: string
-	abstract data: T[]
+	abstract data: (T & SQLiteItem)[]
 
 	@action.bound
 	async loadItems(params?: QueryParams) {
@@ -45,7 +49,7 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	}
 
 	@action.bound
-	async setItem(item: T) {
+	async setItem(item: T & SQLiteItem) {
 		await SQLite.insertOrReplace(this.table, item)
 		this.loadItems(this.lastParams)
 	}
@@ -61,7 +65,7 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	}
 
 	@action.bound
-	async removeItem(item: T) {
+	async removeItem(item: T & SQLiteItem) {
 		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
 		this.loadItems(this.lastParams)
 	}
