@@ -25,6 +25,7 @@ export default class SQLite {
 		SQLite.db = await sqlite.openDatabase(params)
 	}
 
+	// TODO: Trim statement indentation
 	static async query(statement: string, params?: any[]) {
 		const [result] = await SQLite.db.executeSql(statement.trim(), params)
 		return new SQLiteResultSet(result)
