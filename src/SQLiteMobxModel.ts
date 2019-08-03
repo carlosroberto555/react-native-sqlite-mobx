@@ -72,12 +72,15 @@ export default abstract class SQLiteMobxModel<T extends object> {
 	}
 
 	@action.bound
-	async clear() {
+	clear() {
+		this.lastParams = undefined
+		this.data = []
+	}
+
+	@action.bound
+	async truncate() {
 		await SQLite.truncateTable(this.table)
-		runInAction(() => {
-			this.lastParams = undefined
-			this.data = []
-		})
+		runInAction(() => this.clear())
 	}
 }
 
