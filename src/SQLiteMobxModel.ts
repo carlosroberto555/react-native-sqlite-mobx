@@ -1,4 +1,4 @@
-import { action, runInAction } from 'mobx'
+import { action, runInAction, observable } from 'mobx'
 import SQLite from './SQLite'
 
 type QueryParams = {
@@ -7,9 +7,15 @@ type QueryParams = {
 	where?: string
 }
 
-export default abstract class SQLiteMobxModel<T extends { id: number }> {
+interface SQLiteItem {
+	[key: string]: number | string
+	id: number
+}
+
+export default abstract class SQLiteMobxModel<T extends object> {
+	@observable lastParams?: QueryParams
 	abstract table: string
-	abstract data: T[]
+	abstract data: (T & SQLiteItem)[]
 
 	@action.bound
 	async loadItems(params?: QueryParams) {
@@ -20,6 +26,7 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 		)
 		runInAction(() => {
 			this.data = resp.toArray() || []
+			this.lastParams = params
 		})
 	}
 
@@ -27,25 +34,25 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	async setItems(items: T[]) {
 		await SQLite.truncateTable(this.table)
 		await SQLite.insertMany(this.table, items)
-		await this.loadItems()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
 	async addItems(items: T[]) {
 		await SQLite.insertMany(this.table, items)
-		await this.loadItems()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
 	async addItem(item: T) {
 		await SQLite.insert(this.table, item)
-		await this.loadItems()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
-	async setItem(item: T) {
+	async setItem(item: T & SQLiteItem) {
 		await SQLite.insertOrReplace(this.table, item)
-		await this.loadItems()
+		this.loadItems(this.lastParams)
 	}
 
 	@action.bound
@@ -59,9 +66,18 @@ export default abstract class SQLiteMobxModel<T extends { id: number }> {
 	}
 
 	@action.bound
-	async removeItem(item: T) {
+	async removeItem(item: T & SQLiteItem) {
 		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
-		await this.loadItems()
+		this.loadItems(this.lastParams)
+	}
+
+	@action.bound
+	async clear() {
+		await SQLite.truncateTable(this.table)
+		runInAction(() => {
+			this.lastParams = undefined
+			this.data = []
+		})
 	}
 }
 

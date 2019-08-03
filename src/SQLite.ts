@@ -9,6 +9,11 @@ interface TransactionCallback {
 	(tx: SQLiteTransaction): void
 }
 
+interface SQLiteItem {
+	[key: string]: number | string
+	id: number
+}
+
 export default class SQLite {
 	protected static db: sqlite.SQLiteDatabase
 
@@ -20,6 +25,7 @@ export default class SQLite {
 		SQLite.db = await sqlite.openDatabase(params)
 	}
 
+	// TODO: Trim statement indentation
 	static async query(statement: string, params?: any[]) {
 		const [result] = await SQLite.db.executeSql(statement.trim(), params)
 		return new SQLiteResultSet(result)
@@ -53,7 +59,7 @@ export default class SQLite {
 		return SQLite.query(query)
 	}
 
-	static insertOrReplace(table: string, item: object) {
+	static insertOrReplace(table: string, item: SQLiteItem) {
 		// @ts-ignore
 		const { id, ...rest } = item
 

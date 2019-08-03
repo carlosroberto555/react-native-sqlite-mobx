@@ -18,7 +18,8 @@ function SQLiteMobxFlatList(props: Props<any>) {
 
 	useEffect(() => {
 		model.loadItems({ select, join, where })
-	}, [where])
+		return () => model.clear()
+	}, [select, join, where])
 
 	return useObserver(() => <FlatList {...rest} data={model.data} />)
 }
