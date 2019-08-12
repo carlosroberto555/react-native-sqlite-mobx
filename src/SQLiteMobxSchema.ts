@@ -30,7 +30,7 @@ class SQLiteMobxColumn implements SQLParseable {
 
 		// Add column size
 		if (this._size) {
-			sql += `${this._size}`
+			sql += `(${this._size})`
 		}
 
 		// Add Nullable
@@ -46,7 +46,7 @@ class SQLiteMobxColumn implements SQLParseable {
 		}
 
 		// Add Finish comma
-		return sql + ','
+		return sql + ',\n'
 	}
 }
 
@@ -60,7 +60,8 @@ class SQLiteMobxTable implements SQLParseable {
 	}
 
 	primary(param: string = 'id', size: number = 11) {
-		const column = new SQLiteMobxColumn(param, 'INTEGER PRIMARY KEY', size)
+		const type = `INTEGER(${size}) PRIMARY KEY`
+		const column = new SQLiteMobxColumn(param, type, 0)
 		column.nullable(false)
 		return (this._columns[param] = column)
 	}
@@ -90,7 +91,7 @@ class SQLiteMobxTable implements SQLParseable {
 		}
 
 		// Set Column name and starts block
-		sql += ` ${this._name} (`
+		sql += ` ${this._name} (\n`
 
 		// Add Column list
 		for (const key in this._columns) {
