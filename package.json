@@ -6,7 +6,7 @@
 		"url": "git+https://github.com/carlosroberto555/react-native-sqlite-mobx"
 	},
 	"description": "Library with amazing functions for sqlite and mobx",
-	"main": "lib/index.js",
+	"main": "index.js",
 	"types": "lib",
 	"author": "Carlos Roberto",
 	"license": "MIT",
