@@ -99,7 +99,7 @@ class SQLiteMobxTable implements SQLParseable {
 		}
 
 		// Remove last comma and finish block
-		return sql.slice(0, -1) + ');'
+		return sql.replace(/,\n$/g, '\n);')
 	}
 }
 
