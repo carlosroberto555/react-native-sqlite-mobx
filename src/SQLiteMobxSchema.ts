@@ -1,6 +1,10 @@
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
 
-class SQLiteMobxColumn {
+interface SQLParseable {
+	toSQL(): string
+}
+
+class SQLiteMobxColumn implements SQLParseable {
 	_name?: string
 	_type?: string
 	_size?: number
@@ -46,10 +50,9 @@ class SQLiteMobxColumn {
 	}
 }
 
-class SQLiteMobxTable {
-	_name: string
-	_columns: { [key: string]: SQLiteMobxColumn } = {}
-
+class SQLiteMobxTable implements SQLParseable {
+	private _name: string
+	private _columns: { [key: string]: SQLiteMobxColumn } = {}
 	private _ifNotExists?: boolean
 
 	constructor(name: string) {
