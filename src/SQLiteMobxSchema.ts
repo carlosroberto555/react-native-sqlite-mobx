@@ -11,12 +11,17 @@ class SQLiteMobxColumn implements SQLParseable {
 	private _type?: string
 	private _size?: number
 	private _nullable?: boolean
+	private _autoIncrement?: boolean
 	private _default?: string | number | boolean
 
 	constructor(name: string, type: string, size: number) {
 		this._name = name
 		this._type = type
 		this._size = size
+	}
+
+	autoIncrement(value: boolean = true) {
+		this._autoIncrement = value
 	}
 
 	nullable(value: boolean = true) {
@@ -42,6 +47,11 @@ class SQLiteMobxColumn implements SQLParseable {
 			sql += ' NOT NULL'
 		}
 
+		// SET Autoincrement
+		if (this._autoIncrement) {
+			sql += ' AUTOINCREMENT'
+		}
+
 		// SET Default value
 		if (this._default) {
 			sql += ` DEFAULT ${this._default}`
@@ -65,6 +75,7 @@ class SQLiteMobxTable implements SQLParseable {
 		const type = `INTEGER(${size}) PRIMARY KEY`
 		const column = new SQLiteMobxColumn(param, type, 0)
 		column.nullable(false)
+		column.autoIncrement()
 		return (this._columns[param] = column)
 	}
 
@@ -116,6 +127,11 @@ class SQLiteMobxSchema {
 		// Cria a tabela
 		await SQLite.query(table.toSQL())
 	}
+
+	static async drop(name: string) {}
+	static async dropIfExists(name: string) {}
+	static async hasTable(name: string) {}
+	static async hasColumn(...columns: string[]) {}
 }
 
 export { SQLiteMobxActioner, SQLiteMobxTable, SQLiteMobxColumn }
