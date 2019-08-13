@@ -1,4 +1,5 @@
 import SQLite from './SQLite'
+import SQLiteResultSet from './SQLiteResultSet'
 
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
 
@@ -18,18 +19,22 @@ class SQLiteMobxColumn implements SQLParseable {
 		this._name = name
 		this._type = type
 		this._size = size
+		return this
 	}
 
 	autoIncrement(value: boolean = true) {
 		this._autoIncrement = value
+		return this
 	}
 
 	nullable(value: boolean = true) {
 		this._nullable = value
+		return this
 	}
 
 	default(value?: string | number | boolean) {
 		this._default = value
+		return this
 	}
 
 	toSQL() {
@@ -71,11 +76,11 @@ class SQLiteMobxTable implements SQLParseable {
 		this._name = name
 	}
 
-	primary(param: string = 'id', size: number = 11) {
-		const type = `INTEGER(${size}) PRIMARY KEY`
-		const column = new SQLiteMobxColumn(param, type, 0)
-		column.nullable(false)
-		column.autoIncrement()
+	primary(param: string = 'id') {
+		const column = new SQLiteMobxColumn(param, 'INTEGER PRIMARY KEY', 0)
+			.autoIncrement()
+			.nullable(false)
+
 		return (this._columns[param] = column)
 	}
 
@@ -117,7 +122,10 @@ class SQLiteMobxTable implements SQLParseable {
 }
 
 class SQLiteMobxSchema {
-	static async create(name: string, actioner: SQLiteMobxActioner) {
+	static create(
+		name: string,
+		actioner: SQLiteMobxActioner
+	): Promise<SQLiteResultSet> {
 		// Cria uma tabela com o seguinte nome
 		const table = new SQLiteMobxTable(name)
 		// Inicia com chave primária
@@ -125,10 +133,13 @@ class SQLiteMobxSchema {
 		// Chama o table builder
 		actioner(table)
 		// Cria a tabela
-		await SQLite.query(table.toSQL())
+		return SQLite.query(table.toSQL())
 	}
 
-	static async drop(name: string) {}
+	static drop(name: string): Promise<SQLiteResultSet> {
+		return SQLite.query(`DROP TABLE ${name}`)
+	}
+
 	static async dropIfExists(name: string) {}
 	static async hasTable(name: string) {}
 	static async hasColumn(...columns: string[]) {}
