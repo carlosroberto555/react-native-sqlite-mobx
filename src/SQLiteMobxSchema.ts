@@ -1,3 +1,5 @@
+import SQLite from './SQLite'
+
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
 
 interface SQLParseable {
@@ -5,11 +7,11 @@ interface SQLParseable {
 }
 
 class SQLiteMobxColumn implements SQLParseable {
-	_name?: string
-	_type?: string
-	_size?: number
-	_nullable?: boolean
-	_default?: string | number | boolean
+	private _name?: string
+	private _type?: string
+	private _size?: number
+	private _nullable?: boolean
+	private _default?: string | number | boolean
 
 	constructor(name: string, type: string, size: number) {
 		this._name = name
@@ -104,10 +106,15 @@ class SQLiteMobxTable implements SQLParseable {
 }
 
 class SQLiteMobxSchema {
-	static create(name: string, actioner: SQLiteMobxActioner) {
+	static async create(name: string, actioner: SQLiteMobxActioner) {
+		// Cria uma tabela com o seguinte nome
 		const table = new SQLiteMobxTable(name)
+		// Inicia com chave primária
 		table.primary()
+		// Chama o table builder
 		actioner(table)
+		// Cria a tabela
+		await SQLite.query(table.toSQL())
 	}
 }
 
