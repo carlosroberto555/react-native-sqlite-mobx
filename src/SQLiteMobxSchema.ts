@@ -2,6 +2,9 @@ import SQLite from './SQLite'
 import SQLiteResultSet from './SQLiteResultSet'
 
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
+type SQLiteMobxColumns = {
+	[key: string]: SQLiteMobxColumn
+}
 
 interface SQLParseable {
 	toSQL(): string
@@ -69,7 +72,7 @@ class SQLiteMobxColumn implements SQLParseable {
 
 class SQLiteMobxTable implements SQLParseable {
 	private _name: string
-	private _columns: { [key: string]: SQLiteMobxColumn } = {}
+	private _columns: SQLiteMobxColumns = {}
 	private _ifNotExists?: boolean
 
 	constructor(name: string) {
