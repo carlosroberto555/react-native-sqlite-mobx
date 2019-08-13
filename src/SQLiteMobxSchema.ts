@@ -1,3 +1,5 @@
+import SQLite from './SQLite'
+
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
 
 interface SQLParseable {
@@ -5,16 +7,21 @@ interface SQLParseable {
 }
 
 class SQLiteMobxColumn implements SQLParseable {
-	_name?: string
-	_type?: string
-	_size?: number
-	_nullable?: boolean
-	_default?: string | number | boolean
+	private _name?: string
+	private _type?: string
+	private _size?: number
+	private _nullable?: boolean
+	private _autoIncrement?: boolean
+	private _default?: string | number | boolean
 
 	constructor(name: string, type: string, size: number) {
 		this._name = name
 		this._type = type
 		this._size = size
+	}
+
+	autoIncrement(value: boolean = true) {
+		this._autoIncrement = value
 	}
 
 	nullable(value: boolean = true) {
@@ -30,7 +37,7 @@ class SQLiteMobxColumn implements SQLParseable {
 
 		// Add column size
 		if (this._size) {
-			sql += `${this._size}`
+			sql += `(${this._size})`
 		}
 
 		// Add Nullable
@@ -40,13 +47,18 @@ class SQLiteMobxColumn implements SQLParseable {
 			sql += ' NOT NULL'
 		}
 
+		// SET Autoincrement
+		if (this._autoIncrement) {
+			sql += ' AUTOINCREMENT'
+		}
+
 		// SET Default value
 		if (this._default) {
 			sql += ` DEFAULT ${this._default}`
 		}
 
 		// Add Finish comma
-		return sql + ','
+		return sql + ',\n'
 	}
 }
 
@@ -60,8 +72,10 @@ class SQLiteMobxTable implements SQLParseable {
 	}
 
 	primary(param: string = 'id', size: number = 11) {
-		const column = new SQLiteMobxColumn(param, 'INTEGER PRIMARY KEY', size)
+		const type = `INTEGER(${size}) PRIMARY KEY`
+		const column = new SQLiteMobxColumn(param, type, 0)
 		column.nullable(false)
+		column.autoIncrement()
 		return (this._columns[param] = column)
 	}
 
@@ -90,7 +104,7 @@ class SQLiteMobxTable implements SQLParseable {
 		}
 
 		// Set Column name and starts block
-		sql += ` ${this._name} (`
+		sql += ` ${this._name} (\n`
 
 		// Add Column list
 		for (const key in this._columns) {
@@ -98,16 +112,26 @@ class SQLiteMobxTable implements SQLParseable {
 		}
 
 		// Remove last comma and finish block
-		return sql.slice(0, -1) + ');'
+		return sql.replace(/,\n$/g, '\n);')
 	}
 }
 
 class SQLiteMobxSchema {
-	static create(name: string, actioner: SQLiteMobxActioner) {
+	static async create(name: string, actioner: SQLiteMobxActioner) {
+		// Cria uma tabela com o seguinte nome
 		const table = new SQLiteMobxTable(name)
+		// Inicia com chave primária
 		table.primary()
+		// Chama o table builder
 		actioner(table)
+		// Cria a tabela
+		await SQLite.query(table.toSQL())
 	}
+
+	static async drop(name: string) {}
+	static async dropIfExists(name: string) {}
+	static async hasTable(name: string) {}
+	static async hasColumn(...columns: string[]) {}
 }
 
 export { SQLiteMobxActioner, SQLiteMobxTable, SQLiteMobxColumn }
