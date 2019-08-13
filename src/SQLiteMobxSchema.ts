@@ -48,16 +48,16 @@ class SQLiteMobxColumn implements SQLParseable {
 			sql += `(${this._size})`
 		}
 
+		// SET Autoincrement
+		if (this._autoIncrement) {
+			sql += ' AUTOINCREMENT'
+		}
+
 		// Add Nullable
 		if (this._nullable) {
 			sql += ' NULL'
 		} else {
 			sql += ' NOT NULL'
-		}
-
-		// SET Autoincrement
-		if (this._autoIncrement) {
-			sql += ' AUTOINCREMENT'
 		}
 
 		// SET Default value
@@ -143,7 +143,10 @@ class SQLiteMobxSchema {
 		return SQLite.query(`DROP TABLE ${name}`)
 	}
 
-	static async dropIfExists(name: string) {}
+	static dropIfExists(name: string): Promise<SQLiteResultSet> {
+		return SQLite.query(`DROP TABLE IF EXISTS ${name}`)
+	}
+
 	static async hasTable(name: string) {}
 	static async hasColumn(...columns: string[]) {}
 }
