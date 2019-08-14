@@ -4929,10 +4929,9 @@ react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-native-sqlite-storage@^3.3.11:
+react-native-sqlite-storage@carlosroberto555/react-native-sqlite-storage#enable_autolink:
   version "3.3.11"
-  resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-3.3.11.tgz#834c26917f5b5c36a084a9e8d62b04109115422a"
-  integrity sha512-Ek2VsteYQKf1Sz8QmWr5MXjyYYcGqVt8i9FFOIrCg/6OboC6MvpdeY/RYWy4PnquHfQirB7unHPagOFZBCo3Zw==
+  resolved "https://codeload.github.com/carlosroberto555/react-native-sqlite-storage/tar.gz/f7051fd72e163a6f50d9217d16085a5608b61e94"
 
 react-native@^0.59.10:
   version "0.59.10"

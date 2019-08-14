@@ -1,6 +1,6 @@
 {
 	"name": "react-native-sqlite-mobx",
-	"version": "1.3.6",
+	"version": "1.3.7",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/carlosroberto555/react-native-sqlite-mobx"
@@ -22,7 +22,7 @@
 	"dependencies": {
 		"mobx": "^5.10.1",
 		"mobx-react-lite": "^1.4.1",
-		"react-native-sqlite-storage": "^3.3.11"
+		"react-native-sqlite-storage": "carlosroberto555/react-native-sqlite-storage#enable_autolink"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.5.0",
