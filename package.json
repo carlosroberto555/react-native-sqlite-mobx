@@ -22,7 +22,7 @@
 	"dependencies": {
 		"mobx": "^5.10.1",
 		"mobx-react-lite": "^1.4.1",
-		"react-native-sqlite-storage": "carlosroberto555/react-native-sqlite-storage#enable_autolink"
+		"react-native-sqlite-storage": "carlosroberto555/react-native-sqlite-storage"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.5.0",
