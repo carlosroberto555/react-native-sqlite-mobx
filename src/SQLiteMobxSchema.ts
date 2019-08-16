@@ -99,6 +99,14 @@ class SQLiteMobxTable implements SQLParseable {
 		return (this._columns[param] = new SQLiteMobxColumn(param, 'BOOLEAN', size))
 	}
 
+	double(param: string) {
+		return (this._columns[param] = new SQLiteMobxColumn(param, 'DOUBLE', 0))
+	}
+
+	date(param: string) {
+		return (this._columns[param] = new SQLiteMobxColumn(param, 'DATE', 0))
+	}
+
 	ifNotExists(value: boolean = true) {
 		this._ifNotExists = value
 	}
