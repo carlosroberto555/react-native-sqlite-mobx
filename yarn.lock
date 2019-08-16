@@ -4931,7 +4931,7 @@ react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
 
 react-native-sqlite-storage@carlosroberto555/react-native-sqlite-storage:
   version "3.3.11"
-  resolved "https://codeload.github.com/carlosroberto555/react-native-sqlite-storage/tar.gz/da10d4fa638a0e6064136500c8842352bc37493a"
+  resolved "https://codeload.github.com/carlosroberto555/react-native-sqlite-storage/tar.gz/eca10ea96933bdaf7cefbf2092d741f482adb33f"
 
 react-native@^0.59.10:
   version "0.59.10"
