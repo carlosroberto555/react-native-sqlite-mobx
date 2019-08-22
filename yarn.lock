@@ -4929,10 +4929,10 @@ react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-native-sqlite-storage@^3.3.11:
-  version "3.3.11"
-  resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-3.3.11.tgz#834c26917f5b5c36a084a9e8d62b04109115422a"
-  integrity sha512-Ek2VsteYQKf1Sz8QmWr5MXjyYYcGqVt8i9FFOIrCg/6OboC6MvpdeY/RYWy4PnquHfQirB7unHPagOFZBCo3Zw==
+react-native-sqlite-storage@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-4.0.0.tgz#61fe6bd008e56c5d5e47132e620d99d066a7f61c"
+  integrity sha512-Knwo/loHz8uHQAW6XIRjFgmxGl3eCWAoghHl72emBfxXlcyDgbeID24ow4UXcpyTuegIkVtGn9C/ET2RrBfAGA==
 
 react-native@^0.59.10:
   version "0.59.10"

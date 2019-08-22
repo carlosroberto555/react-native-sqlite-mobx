@@ -4,10 +4,9 @@ import { useObserver } from 'mobx-react-lite'
 
 import SQLiteMobxModel from './SQLiteMobxModel'
 
-// @ts-ignore
-interface Props<T extends { id: number }> extends FlatListProps<T> {
+interface Props<T extends { id: number }>
+	extends Omit<FlatListProps<T>, 'data'> {
 	model: SQLiteMobxModel<T>
-	data?: undefined
 	select?: string
 	where?: string
 	join?: string

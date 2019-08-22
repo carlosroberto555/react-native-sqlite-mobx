@@ -18,11 +18,13 @@ databaseMock.executeSql.mockReturnValue([
 	}
 ])
 
+export const DEBUG = jest.fn()
 export const enablePromise = jest.fn()
 export const openDatabase = jest.fn()
 openDatabase.mockReturnValue(databaseMock)
 
 export default {
 	enablePromise,
-	openDatabase
+	openDatabase,
+	DEBUG
 }

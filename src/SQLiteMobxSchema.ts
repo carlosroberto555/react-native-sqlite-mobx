@@ -1,6 +1,10 @@
 import SQLite from './SQLite'
+import SQLiteResultSet from './SQLiteResultSet'
 
 type SQLiteMobxActioner = (table: SQLiteMobxTable) => void
+type SQLiteMobxColumns = {
+	[key: string]: SQLiteMobxColumn
+}
 
 interface SQLParseable {
 	toSQL(): string
@@ -18,18 +22,22 @@ class SQLiteMobxColumn implements SQLParseable {
 		this._name = name
 		this._type = type
 		this._size = size
+		return this
 	}
 
 	autoIncrement(value: boolean = true) {
 		this._autoIncrement = value
+		return this
 	}
 
 	nullable(value: boolean = true) {
 		this._nullable = value
+		return this
 	}
 
 	default(value?: string | number | boolean) {
 		this._default = value
+		return this
 	}
 
 	toSQL() {
@@ -40,16 +48,16 @@ class SQLiteMobxColumn implements SQLParseable {
 			sql += `(${this._size})`
 		}
 
+		// SET Autoincrement
+		if (this._autoIncrement) {
+			sql += ' AUTOINCREMENT'
+		}
+
 		// Add Nullable
 		if (this._nullable) {
 			sql += ' NULL'
 		} else {
 			sql += ' NOT NULL'
-		}
-
-		// SET Autoincrement
-		if (this._autoIncrement) {
-			sql += ' AUTOINCREMENT'
 		}
 
 		// SET Default value
@@ -64,18 +72,18 @@ class SQLiteMobxColumn implements SQLParseable {
 
 class SQLiteMobxTable implements SQLParseable {
 	private _name: string
-	private _columns: { [key: string]: SQLiteMobxColumn } = {}
+	private _columns: SQLiteMobxColumns = {}
 	private _ifNotExists?: boolean
 
 	constructor(name: string) {
 		this._name = name
 	}
 
-	primary(param: string = 'id', size: number = 11) {
-		const type = `INTEGER(${size}) PRIMARY KEY`
-		const column = new SQLiteMobxColumn(param, type, 0)
-		column.nullable(false)
-		column.autoIncrement()
+	primary(param: string = 'id') {
+		const column = new SQLiteMobxColumn(param, 'INTEGER PRIMARY KEY', 0)
+			.autoIncrement()
+			.nullable(false)
+
 		return (this._columns[param] = column)
 	}
 
@@ -89,6 +97,14 @@ class SQLiteMobxTable implements SQLParseable {
 
 	boolean(param: string, size: number = 0) {
 		return (this._columns[param] = new SQLiteMobxColumn(param, 'BOOLEAN', size))
+	}
+
+	double(param: string) {
+		return (this._columns[param] = new SQLiteMobxColumn(param, 'DOUBLE', 0))
+	}
+
+	date(param: string) {
+		return (this._columns[param] = new SQLiteMobxColumn(param, 'DATE', 0))
 	}
 
 	ifNotExists(value: boolean = true) {
@@ -117,7 +133,10 @@ class SQLiteMobxTable implements SQLParseable {
 }
 
 class SQLiteMobxSchema {
-	static async create(name: string, actioner: SQLiteMobxActioner) {
+	static create(
+		name: string,
+		actioner: SQLiteMobxActioner
+	): Promise<SQLiteResultSet> {
 		// Cria uma tabela com o seguinte nome
 		const table = new SQLiteMobxTable(name)
 		// Inicia com chave primária
@@ -125,11 +144,17 @@ class SQLiteMobxSchema {
 		// Chama o table builder
 		actioner(table)
 		// Cria a tabela
-		await SQLite.query(table.toSQL())
+		return SQLite.query(table.toSQL())
 	}
 
-	static async drop(name: string) {}
-	static async dropIfExists(name: string) {}
+	static drop(name: string): Promise<SQLiteResultSet> {
+		return SQLite.query(`DROP TABLE ${name}`)
+	}
+
+	static dropIfExists(name: string): Promise<SQLiteResultSet> {
+		return SQLite.query(`DROP TABLE IF EXISTS ${name}`)
+	}
+
 	static async hasTable(name: string) {}
 	static async hasColumn(...columns: string[]) {}
 }
