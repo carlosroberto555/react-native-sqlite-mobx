@@ -7,16 +7,19 @@ import SQLiteMobxModel from './SQLiteMobxModel'
 interface Props<T extends { id: number }>
 	extends Omit<FlatListProps<T>, 'data'> {
 	model: SQLiteMobxModel<T>
+	autofetch?: boolean
 	select?: string
 	where?: string
 	join?: string
 }
 
 function SQLiteMobxFlatList(props: Props<any>) {
-	const { model, select, where, join, ...rest } = props
+	const { model, select, where, join, autofetch = true, ...rest } = props
 
 	useEffect(() => {
-		model.loadItems({ select, join, where })
+		if (autofetch) {
+			model.loadItems({ select, join, where })
+		}
 		return () => model.clear()
 	}, [select, join, where])
 
