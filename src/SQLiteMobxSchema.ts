@@ -81,10 +81,7 @@ class SQLiteMobxTable implements SQLParseable {
 
 	primary(param: string = 'id') {
 		const column = new SQLiteMobxColumn(param, 'INTEGER PRIMARY KEY', 0)
-			.autoIncrement()
-			.nullable(false)
-
-		return (this._columns[param] = column)
+		return (this._columns[param] = column.autoIncrement().nullable(false))
 	}
 
 	string(param: string, size: number = 50) {
