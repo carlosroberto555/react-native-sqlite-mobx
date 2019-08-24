@@ -16,12 +16,12 @@ interface Props<T extends { id: number }>
 function SQLiteMobxFlatList(props: Props<any>) {
 	const { model, select, where, join, autofetch = true, ...rest } = props
 
-	useEffect(() => {
-		if (autofetch) {
+	if (autofetch) {
+		useEffect(() => {
 			model.loadItems({ select, join, where })
-		}
-		return () => model.clear()
-	}, [select, join, where])
+			return () => model.clear()
+		}, [select, join, where])
+	}
 
 	return useObserver(() => <FlatList {...rest} data={model.data} />)
 }
