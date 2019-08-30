@@ -1,15 +1,10 @@
 import { action, runInAction, observable } from 'mobx'
-import SQLite from './SQLite'
+import SQLite, { SQLiteItem } from './SQLite'
 
 type QueryParams = {
 	select?: string
 	join?: string
 	where?: string
-}
-
-interface SQLiteItem {
-	[key: string]: number | string
-	id: number
 }
 
 export default abstract class SQLiteMobxModel<T extends object> {

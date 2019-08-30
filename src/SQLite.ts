@@ -9,8 +9,8 @@ interface TransactionCallback {
 	(tx: SQLiteTransaction): void
 }
 
-interface SQLiteItem {
-	[key: string]: number | string
+export interface SQLiteItem {
+	[key: string]: any
 	id: number
 }
 
