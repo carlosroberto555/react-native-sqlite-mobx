@@ -4,7 +4,7 @@ import { useObserver } from 'mobx-react-lite'
 
 import SQLiteMobxModel from './SQLiteMobxModel'
 
-interface Props<T extends { id: number }>
+interface SQLiteMobxFlatListProps<T extends { id: number }>
 	extends Omit<FlatListProps<T>, 'data'> {
 	model: SQLiteMobxModel<T>
 	autofetch?: boolean
@@ -13,7 +13,7 @@ interface Props<T extends { id: number }>
 	join?: string
 }
 
-function SQLiteMobxFlatList(props: Props<any>) {
+function SQLiteMobxFlatList(props: SQLiteMobxFlatListProps<any>) {
 	const { model, select, where, join, autofetch = true, ...rest } = props
 
 	if (autofetch) {
@@ -26,4 +26,5 @@ function SQLiteMobxFlatList(props: Props<any>) {
 	return useObserver(() => <FlatList {...rest} data={model.data} />)
 }
 
+export { SQLiteMobxFlatListProps }
 export default SQLiteMobxFlatList
