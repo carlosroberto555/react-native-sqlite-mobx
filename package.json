@@ -17,7 +17,7 @@
 	},
 	"peerDependencies": {
 		"react": ">=16.0.0",
-		"react-native": ">=0.59"
+		"react-native": ">=0.60"
 	},
 	"dependencies": {
 		"mobx": "^5.10.1",
