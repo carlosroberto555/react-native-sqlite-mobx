@@ -14,12 +14,22 @@ class ModelTest extends SQLiteMobxModel<ModelDataType> {
 	table: string = 'test'
 }
 
-const modelTest = new ModelTest()
+describe('test SQLiteMobxFlatList', () => {
+	const modelTest = new ModelTest()
 
-test('SQLiteMobxFlatList renders correctly', () => {
-	const tree = renderer.create(
-		<SQLiteMobxFlatList model={modelTest} renderItem={() => null} />
-	)
+	test('renders correctly', () => {
+		const tree = renderer.create(
+			<SQLiteMobxFlatList model={modelTest} renderItem={() => null} />
+		)
+		expect(tree).toMatchSnapshot()
+		tree.unmount()
+	})
 
-	expect(tree).toMatchSnapshot()
+	test('loadItems called on start', () => {
+		expect(modelTest.loadItems).toBeCalledTimes(1)
+	})
+
+	test('clear called on finish', () => {
+		expect(modelTest.clear).toBeCalledTimes(1)
+	})
 })

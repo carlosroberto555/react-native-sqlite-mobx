@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SQLiteMobxFlatList renders correctly 1`] = `
+exports[`test SQLiteMobxFlatList renders correctly 1`] = `
 <RCTScrollView
   data={Array []}
   disableVirtualization={false}
