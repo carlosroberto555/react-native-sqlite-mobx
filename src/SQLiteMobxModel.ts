@@ -28,26 +28,30 @@ export default abstract class SQLiteMobxModel<T extends object> {
 	@action.bound
 	async setItems(items: T[]) {
 		await SQLite.truncateTable(this.table)
-		await SQLite.insertMany(this.table, items)
+		const result = await SQLite.insertMany(this.table, items)
 		this.loadItems(this.lastParams)
+		return result
 	}
 
 	@action.bound
 	async addItems(items: T[]) {
-		await SQLite.insertMany(this.table, items)
+		const result = await SQLite.insertMany(this.table, items)
 		this.loadItems(this.lastParams)
+		return result
 	}
 
 	@action.bound
 	async addItem(item: T) {
-		await SQLite.insert(this.table, item)
+		const result = await SQLite.insert(this.table, item)
 		this.loadItems(this.lastParams)
+		return result
 	}
 
 	@action.bound
 	async setItem(item: T & SQLiteItem) {
-		await SQLite.insertOrReplace(this.table, item)
+		const result = await SQLite.insertOrReplace(this.table, item)
 		this.loadItems(this.lastParams)
+		return result
 	}
 
 	@action.bound
@@ -62,8 +66,11 @@ export default abstract class SQLiteMobxModel<T extends object> {
 
 	@action.bound
 	async removeItem(item: T & SQLiteItem) {
-		await SQLite.query(`DELETE FROM ${this.table} WHERE id = ${item.id}`)
+		const result = await SQLite.query(
+			`DELETE FROM ${this.table} WHERE id = ${item.id}`
+		)
 		this.loadItems(this.lastParams)
+		return result
 	}
 
 	@action.bound
@@ -74,8 +81,9 @@ export default abstract class SQLiteMobxModel<T extends object> {
 
 	@action.bound
 	async truncate() {
-		await SQLite.truncateTable(this.table)
+		const result = await SQLite.truncateTable(this.table)
 		runInAction(() => this.clear())
+		return result
 	}
 }
 
