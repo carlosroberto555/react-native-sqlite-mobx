@@ -1,5 +1,6 @@
 import { action, runInAction, observable } from 'mobx'
 import SQLite, { SQLiteItem } from './SQLite'
+import SQLiteResultSet from './SQLiteResultSet'
 
 type QueryParams = {
 	select?: string
@@ -28,27 +29,25 @@ export default abstract class SQLiteMobxModel<T extends object> {
 	@action.bound
 	async setItems(items: T[]) {
 		await SQLite.truncateTable(this.table)
-		const result = await SQLite.insertMany(this.table, items)
+		await SQLite.insertMany(this.table, items)
 		this.loadItems(this.lastParams)
-		return result
 	}
 
 	@action.bound
 	async addItems(items: T[]) {
-		const result = await SQLite.insertMany(this.table, items)
+		await SQLite.insertMany(this.table, items)
 		this.loadItems(this.lastParams)
-		return result
 	}
 
 	@action.bound
-	async addItem(item: T) {
+	async addItem(item: T): Promise<SQLiteResultSet> {
 		const result = await SQLite.insert(this.table, item)
 		this.loadItems(this.lastParams)
 		return result
 	}
 
 	@action.bound
-	async setItem(item: T & SQLiteItem) {
+	async setItem(item: T & SQLiteItem): Promise<SQLiteResultSet> {
 		const result = await SQLite.insertOrReplace(this.table, item)
 		this.loadItems(this.lastParams)
 		return result
@@ -65,7 +64,7 @@ export default abstract class SQLiteMobxModel<T extends object> {
 	}
 
 	@action.bound
-	async removeItem(item: T & SQLiteItem) {
+	async removeItem(item: T & SQLiteItem): Promise<SQLiteResultSet> {
 		const result = await SQLite.query(
 			`DELETE FROM ${this.table} WHERE id = ${item.id}`
 		)
@@ -80,7 +79,7 @@ export default abstract class SQLiteMobxModel<T extends object> {
 	}
 
 	@action.bound
-	async truncate() {
+	async truncate(): Promise<SQLiteResultSet> {
 		const result = await SQLite.truncateTable(this.table)
 		runInAction(() => this.clear())
 		return result
